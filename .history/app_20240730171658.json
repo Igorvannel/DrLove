@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "DrLove",
-    "slug": "DrLove",
+    "name": "MyNewProject",
+    "slug": "MyNewProject",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,16 +18,10 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },
-      "package": "com.igorvannel.DrLove"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "b1997303-65e5-4335-926f-c944cfa3d251"
-      }
     }
   }
 }
