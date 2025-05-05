@@ -1,68 +1,166 @@
-// app/components/Header.js
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleSheet, StatusBar, Animated } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Header = ({ navigation }) => {
+  // Animation pour les boutons
+  const profileScale = new Animated.Value(1);
+  const notificationScale = new Animated.Value(1);
+  
+  // Fonctions pour animer les boutons au toucher
+  const animatePress = (animatedValue) => {
+    Animated.sequence([
+      Animated.timing(animatedValue, {
+        toValue: 0.9,
+        duration: 150,
+        useNativeDriver: true,
+      }),
+      Animated.timing(animatedValue, {
+        toValue: 1,
+        duration: 150,
+        useNativeDriver: true,
+      })
+    ]).start();
+  };
+
   return (
-    <View style={styles.header}>
-      <Text style={styles.headerTitle}>Dr Love & Motivation</Text>
-      <View style={styles.iconContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-          <Icon name="person" size={40} color="#fff" style={styles.profileIcon} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
-          <View style={styles.notificationIconContainer}>
-            <Icon name="notifications" size={40} color="#fff" />
-            <View style={styles.notificationBadge}>
-              <Text style={styles.notificationBadgeText}>2</Text>
-            </View>
+    <>
+      <StatusBar backgroundColor="#b71c1c" barStyle="light-content" />
+      <View style={styles.headerContainer}>
+        <View style={styles.header}>
+          {/* Logo et Titre avec effet de profondeur */}
+          <View style={styles.titleContainer}>
+            <Text style={styles.headerTitle}>Dr Love</Text>
+            <Text style={styles.headerSubtitle}>& Motivation</Text>
           </View>
-        </TouchableOpacity>
+          
+          {/* Icônes avec animation et ombres */}
+          <View style={styles.iconContainer}>
+            {/* Bouton Profil */}
+            <Pressable 
+              onPress={() => {
+                animatePress(profileScale);
+                navigation.navigate('Profile');
+              }}
+              style={({pressed}) => [
+                styles.iconButton,
+                pressed && styles.iconButtonPressed
+              ]}
+            >
+              <Animated.View style={[{transform: [{ scale: profileScale }]}]}>
+                <View style={styles.iconWrapper}>
+                  <Icon name="person" size={22} color="#fff" />
+                </View>
+              </Animated.View>
+            </Pressable>
+            
+            {/* Bouton Notifications avec badge animé */}
+            <Pressable 
+              onPress={() => {
+                animatePress(notificationScale);
+                navigation.navigate('Notifications');
+              }}
+              style={({pressed}) => [
+                styles.iconButton,
+                pressed && styles.iconButtonPressed
+              ]}
+            >
+              <Animated.View style={[{transform: [{ scale: notificationScale }]}]}>
+                <View style={styles.iconWrapper}>
+                  <Icon name="notifications" size={22} color="#fff" />
+                  {/* Badge de notification avec animation */}
+                  <Animated.View style={[
+                    styles.notificationBadge,
+                    {transform: [{ scale: notificationScale }]}
+                  ]}>
+                    <Text style={styles.notificationBadgeText}>2</Text>
+                  </Animated.View>
+                </View>
+              </Animated.View>
+            </Pressable>
+          </View>
+        </View>
       </View>
-    </View>
+      
+      {/* Ombre douce sous le header avec effet de courbure */}
+      <View style={styles.headerShadow} />
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+  headerContainer: {
+    backgroundColor: '#c62828',
+    zIndex: 10,
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center', // Center items vertically
+    alignItems: 'center',
     paddingHorizontal: 20,
-    paddingVertical: 30, // Increased paddingVertical
-    backgroundColor: '#c62828', // Couleur de fond pour l'en-tête
+    paddingTop: 15,
+    paddingBottom: 15,
+  },
+  headerShadow: {
+    height: 6,
+    backgroundColor: 'rgba(0,0,0,0.15)',
+    width: '100%',
+  },
+  titleContainer: {
+    flexDirection: 'column',
   },
   headerTitle: {
-    fontSize: 20, // Increased font size for better visibility
+    fontSize: 26,
     color: '#fff',
-    fontFamily: 'Arial', // Remplacez par votre police artistique
     fontWeight: 'bold',
+    letterSpacing: 0.5,
+  },
+  headerSubtitle: {
+    fontSize: 17,
+    color: 'rgba(255,255,255,0.9)',
+    fontWeight: '500',
+    marginTop: -3,
+    letterSpacing: 0.2,
   },
   iconContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  profileIcon: {
-    marginRight: 20,
+  iconButton: {
+    marginLeft: 15,
+    padding: 4,
   },
-  notificationIconContainer: {
+  iconButtonPressed: {
+    opacity: 0.8,
+  },
+  iconWrapper: {
     position: 'relative',
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    backgroundColor: 'rgba(255,255,255,0.18)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 2,
   },
   notificationBadge: {
     position: 'absolute',
-    top: -5,
-    right: -5,
-    backgroundColor: '#ff0000',
+    top: -2,
+    right: -2,
+    backgroundColor: '#ff3d00',
     borderRadius: 10,
-    width: 20,
-    height: 20,
+    minWidth: 19,
+    height: 19,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 4,
+    borderWidth: 2,
+    borderColor: '#c62828',
+    elevation: 3,
   },
   notificationBadgeText: {
     color: '#fff',
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: 'bold',
   },
 });

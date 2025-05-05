@@ -11,6 +11,14 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "plugins": [
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Nous utilisons Face ID pour une connexion sécurisée et rapide."
+        }
+      ]
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -28,6 +36,7 @@
       "eas": {
         "projectId": "b1997303-65e5-4335-926f-c944cfa3d251"
       }
+
     }
   }
 }
